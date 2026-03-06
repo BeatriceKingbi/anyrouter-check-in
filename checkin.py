@@ -211,18 +211,18 @@ def format_check_in_notification(detail: dict) -> str:
 	"""Format check-in notification message"""
 	lines = [
 		f'🎉 签到结果 {detail["name"]}',
-		'════════════════════════',
+		'════════════════════',
 		f'👤 账号：{detail["name"]}',
 		'',
 		'📊 余额信息',
 		f'   💰 当前余额：${detail["after_quota"]:.2f}',
 		f'   📈 累计消耗：${detail["after_used"]:.2f}',
 		'',
-		'════════════════════════',
+		'════════════════════',
 		'📝 签到详情',
 		'   ℹ️  签到成功',
 		'',
-		'════════════════════════',
+		'════════════════════',
 		'📊 签到统计',
 	]
 	return '\n'.join(lines)
