@@ -451,7 +451,7 @@ async def main():
 	if current_balance_hash:
 		save_balance_hash(current_balance_hash)
 
-	if need_notify and notification_content:
+	if need_notify:
 		# 构建通知内容
 		summary = [
 			'[STATS] Check-in result statistics:',
@@ -474,7 +474,14 @@ async def main():
 		notify.push_message('AnyRouter Check-in Alert', notify_content, msg_type='text')
 		print('[NOTIFY] Notification sent due to failures or balance changes')
 	else:
-		print('[INFO] All accounts successful and no balance changes detected, notification skipped')
+		# Generate notification content for successful check-in
+            for i, account in enumerate(accounts):
+                account_key = f'account_{i + 1}'
+                if account_key in account_check_in_details:
+                    detail = account_check_in_details[account_key]
+                    account_result = format_check_in_notification(detail)
+                    notification_content.append(account_result)
+            print('[INFO] Generated notification for successful check-in')
 
 	# 设置退出码
 	sys.exit(0 if success_count > 0 else 1)
