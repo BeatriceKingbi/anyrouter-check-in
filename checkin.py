@@ -221,6 +221,9 @@ def format_check_in_notification(detail: dict) -> str:
 		'════════════════════════',
 		'📝 签到详情',
 		'   ℹ️  签到成功',
+		'',
+		'════════════════════════',
+		'📊 签到统计',
 	]
 	return '\n'.join(lines)
 async def check_in_account(account: AccountConfig, account_index: int, app_config: AppConfig):
