@@ -217,12 +217,12 @@ def format_check_in_notification(detail: dict) -> str:
 		格式化后的通知消息
 	"""
 	lines = [
-		f'[CHECK-IN] {detail["name"]}',
-		'  ━━━━━━━━━━━━━━━━━━━━',
-		'  📍 签到前',
-		f'     💵 余额: ${detail["before_quota"]:.2f}  |  📊 累计消耗: ${detail["before_used"]:.2f}',
-		'  📍 签到后',
-		f'     💵 余额: ${detail["after_quota"]:.2f}  |  📊 累计消耗: ${detail["after_used"]:.2f}',
+		f'🎉 签到结果 {detail["name"]}',
+		'  ════════════════════════',
+		'  ',
+		f'     💰 当前余额: ${detail["before_quota"]:.2f}  |  📈 累计消耗: ${detail["before_used"]:.2f}',
+		'  ',
+		f'     💰 当前余额: ${detail["after_quota"]:.2f}  |  📈 累计消耗: ${detail["after_used"]:.2f}',
 	]
 
 	# 判断是否有变化
@@ -230,7 +230,7 @@ def format_check_in_notification(detail: dict) -> str:
 	has_usage = detail['usage_increase'] != 0
 
 	if has_reward or has_usage:
-		lines.append('  ━━━━━━━━━━━━━━━━━━━━')
+		lines.append('  ════════════════════════')
 
 		# 已签到但期间有使用
 		if not has_reward and has_usage:
@@ -238,7 +238,7 @@ def format_check_in_notification(detail: dict) -> str:
 
 		# 签到获得
 		if has_reward:
-			lines.append(f'  🎁 签到获得: +${detail["check_in_reward"]:.2f}')
+			lines.append(f'  🎁 签到奖励: +${detail["check_in_reward"]:.2f}')
 
 		# 期间消耗
 		if has_usage:
@@ -251,7 +251,7 @@ def format_check_in_notification(detail: dict) -> str:
 			lines.append(f'  {change_emoji} 余额变化: {change_symbol}${detail["balance_change"]:.2f}')
 	else:
 		# 无任何变化
-		lines.extend(['  ━━━━━━━━━━━━━━━━━━━━', '  ℹ️  今日已签到，无变化'])
+		lines.extend(['  ════════════════════════', '  ℹ️  今日已签到，余额无变化'])
 
 	return '\n'.join(lines)
 
@@ -454,24 +454,24 @@ async def main():
 	if need_notify:
 		# 构建通知内容
 		summary = [
-			'[STATS] Check-in result statistics:',
-			f'[SUCCESS] Success: {success_count}/{total_count}',
-			f'[FAIL] Failed: {total_count - success_count}/{total_count}',
+			'📊 签到统计',
+			f'   ✅ 成功: {success_count}/{total_count}',
+			f'   ❌ 失败: {total_count - success_count}/{total_count}',
 		]
 
 		if success_count == total_count:
-			summary.append('[SUCCESS] All accounts check-in successful!')
+			summary.append('✅ 所有账号签到成功！')
 		elif success_count > 0:
-			summary.append('[WARN] Some accounts check-in successful')
+			summary.append('⚠️ 部分账号签到成功')
 		else:
-			summary.append('[ERROR] All accounts check-in failed')
+			summary.append('❌ 所有账号签到失败')
 
 		time_info = f'[TIME] Execution time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
 
 		notify_content = '\n\n'.join([time_info, '\n'.join(notification_content), '\n'.join(summary)])
 
 		print(notify_content)
-		notify.push_message('AnyRouter Check-in Alert', notify_content, msg_type='text')
+		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
 		print('[NOTIFY] Notification sent due to failures or balance changes')
 	else:
 		# Generate notification content for successful check-in
