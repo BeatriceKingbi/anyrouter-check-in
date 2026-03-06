@@ -208,54 +208,21 @@ def execute_check_in(client, account_name: str, provider_config, headers: dict):
 
 
 def format_check_in_notification(detail: dict) -> str:
-	"""格式化签到通知消息
-
-	Args:
-		detail: 包含签到详情的字典
-
-	Returns:
-		格式化后的通知消息
-	"""
+	"""Format check-in notification message"""
 	lines = [
 		f'🎉 签到结果 {detail["name"]}',
-		'  ════════════════════════',
-		'  ',
-		f'     💰 当前余额: ${detail["before_quota"]:.2f}  |  📈 累计消耗: ${detail["before_used"]:.2f}',
-		'  ',
-		f'     💰 当前余额: ${detail["after_quota"]:.2f}  |  📈 累计消耗: ${detail["after_used"]:.2f}',
+		'════════════════════════',
+		f'👤 账号：{detail["name"]}',
+		'',
+		'📊 余额信息',
+		f'   💰 当前余额：${detail["after_quota"]:.2f}',
+		f'   📈 累计消耗：${detail["after_used"]:.2f}',
+		'',
+		'════════════════════════',
+		'📝 签到详情',
+		'   ℹ️  签到成功',
 	]
-
-	# 判断是否有变化
-	has_reward = detail['check_in_reward'] != 0
-	has_usage = detail['usage_increase'] != 0
-
-	if has_reward or has_usage:
-		lines.append('  ════════════════════════')
-
-		# 已签到但期间有使用
-		if not has_reward and has_usage:
-			lines.append('  ℹ️  今日已签到（期间有使用）')
-
-		# 签到获得
-		if has_reward:
-			lines.append(f'  🎁 签到奖励: +${detail["check_in_reward"]:.2f}')
-
-		# 期间消耗
-		if has_usage:
-			lines.append(f'  📉 期间消耗: ${detail["usage_increase"]:.2f}')
-
-		# 余额变化
-		if detail['balance_change'] != 0:
-			change_symbol = '+' if detail['balance_change'] > 0 else ''
-			change_emoji = '📈' if detail['balance_change'] > 0 else '📉'
-			lines.append(f'  {change_emoji} 余额变化: {change_symbol}${detail["balance_change"]:.2f}')
-	else:
-		# 无任何变化
-		lines.extend(['  ════════════════════════', '  ℹ️  今日已签到，余额无变化'])
-
 	return '\n'.join(lines)
-
-
 async def check_in_account(account: AccountConfig, account_index: int, app_config: AppConfig):
 	"""为单个账号执行签到操作"""
 	account_name = account.get_display_name(account_index)
