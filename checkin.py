@@ -429,7 +429,8 @@ async def main():
 			need_notify = True
 			print('[NOTIFY] Balance changes detected, will send notification')
 		else:
-			print('[INFO] No balance changes detected')
+			need_notify = True
+		print('[NOTIFY] No balance changes, but will send notification anyway')
 
 	# 为有余额变化的情况添加所有成功账号到通知内容
 	if balance_changed:
