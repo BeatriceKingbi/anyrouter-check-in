@@ -447,33 +447,28 @@ async def main():
 				detail = account_check_in_details[account_key]
 				account_result = format_check_in_notification(detail)
 				notification_content.append(account_result)
-		# Send notification for successful check-in
+		# Build notification content for ALL accounts
+		for i, account in enumerate(accounts):
+			account_key = f'account_{i + 1}'
+			if account_key in account_check_in_details:
+				detail = account_check_in_details[account_key]
+				account_result = format_check_in_notification(detail)
+				notification_content.append(account_result)
+		
+		# Build summary
 		summary = [
 		    '📊 签到统计',
 		    f'   ✅ 成功：{success_count}/{total_count}',
 		    f'   ❌ 失败：{total_count - success_count}/{total_count}',
 		]
-	# Build notification content for ALL accounts
-	for i, account in enumerate(accounts):
-		account_key = f'account_{i + 1}'
-		if account_key in account_check_in_details:
-			detail = account_check_in_details[account_key]
-			account_result = format_check_in_notification(detail)
-			notification_content.append(account_result)
-	
-	# Build summary
-	summary = [
-		'📊 签到统计',
-		f'   ✅ 成功：{success_count}/{total_count}',
-		f'   ❌ 失败：{total_count - success_count}/{total_count}',
-	]
-	if success_count == total_count:
-		summary.append('✅ 所有账号签到成功！')
-	time_info = f'[TIME] Execution time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
-	notify_content = '\n\n'.join([time_info, '\n'.join(notification_content), '\n'.join(summary)])
-	notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
-	print('[NOTIFY] Notification sent')
-	sys.exit(0 if success_count > 0 else 1)
+		if success_count == total_count:
+		    summary.append('✅ 所有账号签到成功！')
+		time_info = f'[TIME] Execution time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+		notify_content = '\n\n'.join([time_info, '\n'.join(notification_content), '\n'.join(summary)])
+		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
+		print('[NOTIFY] Notification sent')
+
+		sys.exit(0 if success_count > 0 else 1)
 
 
 def run_main():
