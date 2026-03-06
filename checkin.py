@@ -294,7 +294,7 @@ async def check_in_account(account: AccountConfig, account_index: int, app_confi
 async def main():
 	"""主函数"""
 	print('[SYSTEM] AnyRouter.top multi-account auto check-in script started (using Playwright)')
-	print(f'[时间] 执行时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+	print(f'执行时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
 
 	app_config = AppConfig.load_from_env()
 	print(f'[INFO] Loaded {len(app_config.providers)} provider configuration(s)')
@@ -438,7 +438,7 @@ async def main():
 		]
 		if success_count == total_count:
 		    summary.append('✅ 所有账号签到成功！')
-		time_info = f'[时间] 执行时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+		time_info = f'执行时间: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
 		notify_content = '\n\n'.join([time_info, '\n'.join(notification_content), '\n'.join(summary)])
 		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
 		print('[NOTIFY] Notification sent')
