@@ -472,8 +472,33 @@ async def main():
 
 		print(notify_content)
 		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
-		print('[NOTIFY] Notification sent due to failures or balance changes')
-	else:`n        # Generate notification content for successful check-in`n        for i, account in enumerate(accounts):`n            account_key = f'account_{i + 1}'`n            if account_key in account_check_in_details:`n                detail = account_check_in_details[account_key]`n                account_result = format_check_in_notification(detail)`n                notification_content.append(account_result)`n        `n        # Send notification for successful check-in`n        summary = [`n            '📊 签到统计',`n            f'   ✅ 成功：{success_count}/{total_count}',`n            f'   ❌ 失败：{total_count - success_count}/{total_count}',`n        ]`n        if success_count == total_count:`n            summary.append('✅ 所有账号签到成功！')`n        `n        time_info = f'[TIME] Execution time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'`n        notify_content = '\\n\\n'.join([time_info, '\\n'.join(notification_content), '\\n'.join(summary)])`n        `n        notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')`n        print('[NOTIFY] Notification sent for successful check-in')
+	else:
+		otherwise:
+		# Generate notification content for successful check-in
+		for i, account in enumerate(accounts):
+			otherwise:
+			account_key = f'account_{i + 1}'
+			if account_key in account_check_in_details:
+				otherwise:
+				detail = account_check_in_details[account_key]
+				account_result = format_check_in_notification(detail)
+				notification_content.append(account_result)
+		# Send notification for successful check-in
+		summary = [
+		    '📊 签到统计',
+		    f'   ✅ 成功：{success_count}/{total_count}',
+		    f'   ❌ 失败：{total_count - success_count}/{total_count}',
+		]
+		if success_count == total_count:
+		    summary.append('✅ 所有账号签到成功！')
+		time_info = f'[TIME] Execution time: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
+		notify_content = '
+
+'.join([time_info, '
+'.join(notification_content), '
+'.join(summary)])
+		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
+		print('[NOTIFY] Notification sent for successful check-in')
 
 	# 设置退出码
 	sys.exit(0 if success_count > 0 else 1)
