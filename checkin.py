@@ -491,11 +491,9 @@ async def main():
 		]
 		if success_count == total_count:
 		    summary.append('✅ 所有账号签到成功！')
-		notify_content = '
-
-'.join([time_info, '
-'.join(notification_content), '
-'.join(summary)])
+		notify_content = '\n\n'.join([time_info, '\n'.join(notification_content), '\n'.join(summary)])
+		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
+		print('[NOTIFY] Notification sent for successful check-in')
 		notify.push_message('🎉 AnyRouter 签到通知', notify_content, msg_type='text')
 		print('[NOTIFY] Notification sent for successful check-in')
 
